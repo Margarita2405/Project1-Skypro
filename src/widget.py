@@ -1,3 +1,6 @@
+from src.masks import get_mask_account, get_mask_card_number
+
+
 def mask_account_card(info_string: str) -> str:
     """Функция, которая принимает строку, содержащую тип и номер банковской карты/счета,
     и возвращает строку с замаскированным номером"""
@@ -22,7 +25,7 @@ def mask_account_card(info_string: str) -> str:
             raise ValueError("Некорректный ввод, номер счета слишком короткий")
 
         # Создаем замаскированную строку для счета
-        masked_account = f"** {number[-4:]}"
+        masked_account = get_mask_account(number)
         return f"{type_card} {masked_account}"
     else:
         # Маскировка для карты
@@ -30,7 +33,7 @@ def mask_account_card(info_string: str) -> str:
             raise ValueError("Некорректный ввод, номер карты слишком короткий")
 
         # Создаем замаскированную строку для карты
-        masked_card = f"{number[:4]} {number[4:6]}** ****{number[-4:]} "
+        masked_card = get_mask_card_number(number)
         return f"{type_card} {masked_card}"
 
 
