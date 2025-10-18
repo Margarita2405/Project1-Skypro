@@ -31,7 +31,7 @@ def mask_account_card(info_string: str) -> str:
     замаскированным номером.
     Пример: 'Visa Platinum 7000792289606361' -> 
     'Visa Platinum 7000 79** **** 6361'
-    'Счет 73654108430135874305' -> 'Счет **4305'""""
+    'Счет 73654108430135874305' -> 'Счет **4305'"""
 
 4. **Форматирование даты** (get_date)
 def get_date(date_string: str) -> str:
@@ -51,6 +51,23 @@ def sort_by_date(operations: List[Dict[str, Any]], reverse: bool = True) -> List
     список, отсортированный по ключу 'date'. Сортировка выполняется
     по умолчанию в порядке убывания."""
 
+7. **Фильтрация транзакций по валюте** (filter_by_currency)
+def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Iterator[Dict[str, Any]]:
+    """Фильтрует транзакции по заданной валюте. Функция принимает список транзакций и возвращает
+    итератор, который поочередно выдает транзакции, где валюта операции соответствует заданной."""
+
+8. **Описание транзакций**
+def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Iterator[str]:
+    """Генератор, который возвращает описание каждой транзакции по очереди. Функция принимает
+    список транзакций и возвращает итератор, который поочередно выдает строки с описанием операций."""
+
+9. **Генерация номеров банковских карт**
+def card_number_generator(start: int, stop: int) -> Generator[str]:
+    """Генератор номеров банковских карт в формате XXXX XXXX XXXX XXXX.Генерирует номера карт
+    в заданном диапазоне, начиная с начального значения и заканчивая конечным значением
+    включительно. Каждый номер карты форматируется как четыре группы по четыре цифры,
+    разделенные пробелами."""
+
 ## Установка:
 
 1. Клонируйте репозиторий:
@@ -66,12 +83,20 @@ pip install -r requirements.txt
 from src.masks.py import get_mask_card_number, get_mask_account
 from src.widget.py import mask_account_card, get_date
 from src.processing.py import filter_by_state, sort_by_date
+from src.generators.py import card_number_generator, filter_by_currency, transaction_descriptions
 
 # Пример использования:
 masked_number = get_mask_card_number('7000792289606361')
 masked_account = get_mask_account('73654108430135874305')
 masked_card = mask_account_card('Visa Platinum 7000792289606361')
 formatted_date = get_date('2024-03-11T02:26:18.671407')
+executed_operations = filter_by_state(operations, "EXECUTED")
+canceled_operations = filter_by_state(operations, "CANCELED")
+sort_descending = sort_by_date(operations)
+sort_ascending = sort_by_date(operations, reverse=False)
+usd_transaction = filter_by_currency(transactions, "USD")
+descriptions = transaction_descriptions(transactions)
+card_numbers = card_number_generator(1, 5)
 
 # Обработка операций:
 filtered_operations = filter_by_state('id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364')
@@ -92,7 +117,7 @@ sorted_operations = sort_by_date('id': 939719570, 'state': 'EXECUTED', 'date': '
 
 Для работы с проектом используются следующие фикстуры в модуле 
 conftest.py и параметризация в модулях test_masks.py, 
-test_widget.py, test_processing.py:
+test_widget.py, test_processing.py, test_generators.py:
 
 ## Фикстуры
 
@@ -114,6 +139,19 @@ test_widget.py, test_processing.py:
      с примерами операций.
 *   `operations_with_same_dates`: содержит тестовые данные с 
      с операциями, содержащими одинаковые даты.
+*   `sample_transactions`: содержит тестовые данные с примером 
+     транзакций с разными валютами и состояниями.
+*   `transactions_with_invalid_structure`: содержит тестовые данные 
+     с транзакциями, имеющими некорректную структуру с отсутствующими полями.
+*   `empty_transactions`: содержит пустой список транзакций.
+*   `transactions_with_missing_fields`: содержит тестовые с
+     транзакциями с отсутствующими или некорректными полями.
+*   `small_range`: предоставляет малый диапазон для тестирования.
+*   `medium_range`: предоставляет средний диапазон для тестирования.
+*   `edge_range`: предоставляет крайние значения для тестирования.
+*   `small_edge_range`: предоставляет небольшой диапазон для тестирования 
+     крайних случаев.
+*   `single_number_range`: предоставляет диапазон из одного числа.
 
 ## Параметризация
   
@@ -148,6 +186,12 @@ test_widget.py, test_processing.py:
     различных возможных значений статуса state.
 *   `test_sort_parameterized`: тестирование для 
     для различных направлений сортировки.
+*   `test_transaction_descriptions_different_sizes`: тестирование для
+    проверки работы с разным количеством транзакций.
+*   `test_transaction_descriptions_various_formats`: тестирование для
+    проверки различных форматов транзакций.
+*   `test_card_number_generator_specific_numbers`: Тестирует 
+    форматирование конкретных номеров карт.
 
 # Подготовка к тестированию
 
@@ -171,6 +215,7 @@ test_widget.py, test_processing.py:
     pytest tests/test_masks.py
     pytest tests/test_widget.py
     pytest tests/test_processing.py
+    pytest tests/test_generators.py
     ```
 3. Ожидаемый результат.
 После успешного выполнения тестов вы должны увидеть вывод, 
@@ -190,7 +235,7 @@ test_widget.py, test_processing.py:
 6. Для создания отчета о покрытии в HTML-формате, используйте 
 следующую команду в терминале: 
     ```
-    pytest --cov=tests --cov-report=html
+    pytest --cov=src --cov-report=html
     ```
 
 ## Документация:

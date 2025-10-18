@@ -68,5 +68,3 @@ if __name__ == "__main__":
     print("\nСортировка по возрастанию: ")
     for operation in sort_ascending:
         print(f"ID: {operation['id']}, State: {operation['state']}, Date: {operation['date']}")
-
-
