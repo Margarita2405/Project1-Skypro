@@ -68,6 +68,12 @@ def card_number_generator(start: int, stop: int) -> Generator[str]:
     включительно. Каждый номер карты форматируется как четыре группы по четыре цифры,
     разделенные пробелами."""
 
+10. **Декоратор для логирования функции**
+def log(filename: Optional[str] = None) -> Callable:
+    """Декоратор для логирования начала и конца выполнения функции, а также результатов или ошибок.
+    Принимает необязательный аргумент filename для записи логов в файл. Если None, логи выводятся в
+    консоль."""
+
 ## Установка:
 
 1. Клонируйте репозиторий:
@@ -84,6 +90,7 @@ from src.masks.py import get_mask_card_number, get_mask_account
 from src.widget.py import mask_account_card, get_date
 from src.processing.py import filter_by_state, sort_by_date
 from src.generators.py import card_number_generator, filter_by_currency, transaction_descriptions
+from src.decorators.py import log
 
 # Пример использования:
 masked_number = get_mask_card_number('7000792289606361')
@@ -97,6 +104,7 @@ sort_ascending = sort_by_date(operations, reverse=False)
 usd_transaction = filter_by_currency(transactions, "USD")
 descriptions = transaction_descriptions(transactions)
 card_numbers = card_number_generator(1, 5)
+@log(filename="mylog.txt")
 
 # Обработка операций:
 filtered_operations = filter_by_state('id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364')
@@ -117,7 +125,8 @@ sorted_operations = sort_by_date('id': 939719570, 'state': 'EXECUTED', 'date': '
 
 Для работы с проектом используются следующие фикстуры в модуле 
 conftest.py и параметризация в модулях test_masks.py, 
-test_widget.py, test_processing.py, test_generators.py:
+test_widget.py, test_processing.py, test_generators.py,
+test_decorators.py
 
 ## Фикстуры
 
@@ -216,6 +225,7 @@ test_widget.py, test_processing.py, test_generators.py:
     pytest tests/test_widget.py
     pytest tests/test_processing.py
     pytest tests/test_generators.py
+    pytest tests/test_decorators.py
     ```
 3. Ожидаемый результат.
 После успешного выполнения тестов вы должны увидеть вывод, 
