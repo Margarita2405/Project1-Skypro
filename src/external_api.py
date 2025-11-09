@@ -12,9 +12,6 @@ load_dotenv(BASE_DIR / ".env")
 API_KEY = os.getenv("API_KEY")
 URL = "https://api.apilayer.com/exchangerates_data/convert"
 
-# Проверяем, загрузился ли API-ключ
-print(f"API_KEY loaded: {API_KEY is not None}")
-
 
 def convert_currency_api(amount: float, from_currency: str, to_currency: str = "RUB") -> float:
     """Вспомогательная функция для конвертации валют через API."""
@@ -33,17 +30,11 @@ def convert_currency_api(amount: float, from_currency: str, to_currency: str = "
         # Выполнение GET запроса к API
         response = requests.get(URL, headers=headers, params=params)
 
-        # Дополнительная диагностика
-        print(f"Response status: {response.status_code}")
-
         # Проверка статуса ответа
         response.raise_for_status()
 
         # Получение данных из ответа API в формате JSON
         data: Dict[str, Any] = response.json()
-
-        # Диагностика ответа
-        print(f"API Response: {data}")
 
         # Проверка успешности запроса по полю success
         if data.get("success", False):
@@ -96,6 +87,7 @@ def convert_currency(transaction: Dict[str, Any]) -> float:
         return convert_currency_api(amount, currency_code, "RUB")
 
     return amount
+
 
 # Пример использования
 if __name__ == "__main__":
