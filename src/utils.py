@@ -31,6 +31,8 @@ def load_transactions(file_path: str) -> List[Dict[str, Any]]:
 
     except json.JSONDecodeError:
         return []
+    except FileNotFoundError:
+        return []
     except Exception:
         return []
 
