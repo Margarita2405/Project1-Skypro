@@ -1,0 +1,2 @@
+2025-11-14 18:39:25 - utils - DEBUG: Попытка загрузить транзакции из файла: C:\Users\mburs\PycharmProjects\Project1-Skypro\data\operations.json
+2025-11-14 18:39:25 - utils - INFO: Успешно загружено 101 транзакций из файла C:\Users\mburs\PycharmProjects\Project1-Skypro\data\operations.json
