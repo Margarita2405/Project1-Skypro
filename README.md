@@ -74,15 +74,41 @@ def log(filename: Optional[str] = None) -> Callable:
     Принимает необязательный аргумент filename для записи логов в файл. Если None, логи выводятся в
     консоль."""
 
+11. **Файл с данными о финансовых транзациях**
+    data/operations.json
+
+12. **Конвертация валюты с помощью APILayer**
+def convert_currency(amount: float, from_currency: str, to_currency: str = "RUB") -> float:
+    """Конвертирует сумму из одной валюты в другую используя 
+    Exchange Rates Data API"""
+
+13. **Обработка транзакций**
+def get_transaction_amount_in_rub(transaction: Dict[str, Any]) -> float:
+    """Функция, которая принимает на вход транзакцию и возвращает
+    сумму транзакции (amount) в рублях."""
+
+14. **Получение данных из JSON-файла**
+def load_transactions(file_path: str) -> List[Dict[str, Any]]:
+    """Загружает данные о финансовых транзакциях из JSON-файла."""
+
+
 ## Установка:
 
 1. Клонируйте репозиторий:
 ```
 git clone https://github.com/Margarita2405/Project1-Skypro
 ```
-2. Установите зависимости
+2. Установите зависимости:
 ```
 pip install -r requirements.txt
+poetry add requests
+```
+3. НАСТРОЙКИ API ДЛЯ КОНВЕРТАЦИИ ВАЛЮТ. API-ключ для Exchange 
+   Rates Data API:
+```
+Зарегистрируйтесь на https://apilayer.com/marketplace/exchangerates_data-api
+и получите бесплатный ключ
+API_KEY=your_actual_api_key_here
 ```
 ## Использование функций:
 
@@ -91,6 +117,9 @@ from src.widget.py import mask_account_card, get_date
 from src.processing.py import filter_by_state, sort_by_date
 from src.generators.py import card_number_generator, filter_by_currency, transaction_descriptions
 from src.decorators.py import log
+from src.external_api.py import convert_currency
+from src.transactions.py import get_transaction_amount_in_rub
+from src.utils.py import load_transactions
 
 # Пример использования:
 masked_number = get_mask_card_number('7000792289606361')
@@ -105,6 +134,8 @@ usd_transaction = filter_by_currency(transactions, "USD")
 descriptions = transaction_descriptions(transactions)
 card_numbers = card_number_generator(1, 5)
 @log(filename="mylog.txt")
+rub_amount = get_transaction_amount_in_rub(transaction)
+transactions = load_transactions("data/operations.json")
 
 # Обработка операций:
 filtered_operations = filter_by_state('id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364')
@@ -126,7 +157,8 @@ sorted_operations = sort_by_date('id': 939719570, 'state': 'EXECUTED', 'date': '
 Для работы с проектом используются следующие фикстуры в модуле 
 conftest.py и параметризация в модулях test_masks.py, 
 test_widget.py, test_processing.py, test_generators.py,
-test_decorators.py
+test_decorators.py, test_external_api.py, test_transactions.py,
+test_utils.py
 
 ## Фикстуры
 
@@ -211,6 +243,7 @@ test_decorators.py
     pip install -r requirements.txt
     poetry add --group dev pytest
     poetry add --group dev pytest-cov
+    poetry add requests
     ```
 # Запуск тестов
 
@@ -226,6 +259,9 @@ test_decorators.py
     pytest tests/test_processing.py
     pytest tests/test_generators.py
     pytest tests/test_decorators.py
+    pytest tests/test_external_api.py
+    pytest tests/test_transactions.py
+    pytest tests/test_utils.py
     ```
 3. Ожидаемый результат.
 После успешного выполнения тестов вы должны увидеть вывод, 
