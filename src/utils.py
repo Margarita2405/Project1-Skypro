@@ -7,22 +7,19 @@ from typing import List, Dict, Any
 # Определяем абсолютный путь к папке logs в корне проекта
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)  # Поднимаемся на уровень выше (из src в корень)
-log_dir = os.path.join(project_root, 'logs')
+log_dir = os.path.join(project_root, "logs")
 
 # Создаем отдельный логгер для модуля utils
-logger = logging.getLogger('utils')
+logger = logging.getLogger("utils")
 logger.setLevel(logging.DEBUG)
 
 # Создаем обработчик файла с абсолютным путем
-log_file_path = os.path.join(log_dir, 'utils.log')
-file_handler = logging.FileHandler(log_file_path, mode="w", encoding='utf-8')
+log_file_path = os.path.join(log_dir, "utils.log")
+file_handler = logging.FileHandler(log_file_path, mode="w", encoding="utf-8")
 file_handler.setLevel(logging.DEBUG)
 
 # Создаем форматтер для логов
-file_formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s: %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 # Устанавливаем форматтер для обработчика
 file_handler.setFormatter(file_formatter)

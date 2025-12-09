@@ -91,6 +91,16 @@ def get_transaction_amount_in_rub(transaction: Dict[str, Any]) -> float:
 def load_transactions(file_path: str) -> List[Dict[str, Any]]:
     """Загружает данные о финансовых транзакциях из JSON-файла."""
 
+15. **Получение данных о финансовых операций из CSV-файла**
+def read_transactions_from_csv(file_path: str) -> List[Dict[str, Any]]:
+    """Считывает финансовые операции из CSV-файла и возвращает
+    список словарей с транзакциями."""
+
+16. **Получение данных о финансовых операциях из Excel-файла**
+def read_transactions_from_excel(file_path: str) -> List[Dict[str, Any]]:
+    """Считывает финансовые операции из Excel-файла и возвращает
+    список словарей."""
+
 
 ## Установка:
 
@@ -102,6 +112,8 @@ git clone https://github.com/Margarita2405/Project1-Skypro
 ```
 pip install -r requirements.txt
 poetry add requests
+poetry add pandas
+poetry add openpyxl
 ```
 3. НАСТРОЙКИ API ДЛЯ КОНВЕРТАЦИИ ВАЛЮТ. API-ключ для Exchange 
    Rates Data API:
@@ -120,6 +132,8 @@ from src.decorators.py import log
 from src.external_api.py import convert_currency
 from src.transactions.py import get_transaction_amount_in_rub
 from src.utils.py import load_transactions
+from src.transactions_csv import read_transactions_from_csv
+from src.transactions_excel import read_transactions_from_excel
 
 # Пример использования:
 masked_number = get_mask_card_number('7000792289606361')
@@ -136,6 +150,8 @@ card_numbers = card_number_generator(1, 5)
 @log(filename="mylog.txt")
 rub_amount = get_transaction_amount_in_rub(transaction)
 transactions = load_transactions("data/operations.json")
+transactions = read_transactions_from_csv("data/transactions.csv")
+transactions = read_transactions_from_excel("data/transactions_excel.xlsx")
 
 # Обработка операций:
 filtered_operations = filter_by_state('id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364')
@@ -158,7 +174,7 @@ sorted_operations = sort_by_date('id': 939719570, 'state': 'EXECUTED', 'date': '
 conftest.py и параметризация в модулях test_masks.py, 
 test_widget.py, test_processing.py, test_generators.py,
 test_decorators.py, test_external_api.py, test_transactions.py,
-test_utils.py
+test_utils.py, test_transactions_csv.py, test_transactions_excel.py
 
 ## Фикстуры
 
@@ -262,6 +278,8 @@ test_utils.py
     pytest tests/test_external_api.py
     pytest tests/test_transactions.py
     pytest tests/test_utils.py
+    pytest tests/test_transactions_csv.py
+    pytest tests/test_transactions_excel.py
     ```
 3. Ожидаемый результат.
 После успешного выполнения тестов вы должны увидеть вывод, 
