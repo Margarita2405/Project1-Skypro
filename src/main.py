@@ -1,3 +1,4 @@
+import os
 from typing import List, Dict, Any
 
 from src.utils import load_transactions
@@ -169,27 +170,30 @@ def main() -> None:
 
     file_choice = input("\nВаш выбор: ").strip()
 
-    absolute_path = ""
+    file_path = ""
     transactions = []
 
     # Загрузка данных в зависимости от выбора пользователя
     if file_choice == "1":
         # Используем существующий файл
-        absolute_path = r"C:\Users\mburs\PycharmProjects\Project1-Skypro\data\operations.json"
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(current_dir, "data", "operations.json")
         print("Для обработки выбран JSON-файл.")
-        transactions = load_transactions(absolute_path)
+        transactions = load_transactions(file_path)
 
     elif file_choice == "2":
         # Используем существующий файл
-        absolute_path = r"C:\Users\mburs\PycharmProjects\Project1-Skypro\data\transactions.csv"
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(current_dir, "data", "transactions.csv")
         print("Для обработки выбран CSV-файл.")
-        transactions = read_transactions_from_csv(absolute_path)
+        transactions = read_transactions_from_csv(file_path)
 
     elif file_choice == "3":
         # Используем существующий файл
-        absolute_path = r"C:\Users\mburs\PycharmProjects\Project1-Skypro\data\transactions_excel.xlsx"
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(current_dir, "data", "transactions_excel.xlsx")
         print("Для обработки выбран XLSX-файл.")
-        transactions = read_transactions_from_excel(absolute_path)
+        transactions = read_transactions_from_excel(file_path)
 
     else:
         print("Неверный выбор. Программа завершена.")
