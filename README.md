@@ -101,6 +101,52 @@ def read_transactions_from_excel(file_path: str) -> List[Dict[str, Any]]:
     """Считывает финансовые операции из Excel-файла и возвращает
     список словарей."""
 
+17. **Подсчет количества банковских операций по категориям**
+def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -> Dict[str, int]:
+    """Функция, которая принимает список словарей с данными о 
+    банковских операциях и список категорий операций, а возвращает 
+    словарь, в котором ключи — это названия категорий, а значения — это
+    количество операций в каждой категории. Категории операций хранятся 
+    в поле description."""
+
+18. **Поиск операций по заданной строке**
+def process_bank_search(data: List[Dict], search: str) -> List[Dict]:
+    """Функция, которая принимает список словарей с данными о 
+    банковских операциях и строку поиска и возвращает список
+    словарей, у которых в описании есть данная строка."""
+
+19. **Фильтрация транзакции по ключевому слову**
+def filter_by_description_keyword(transactions: List[Dict[str, Any]], keyword: str) -> List[Dict[str, Any]]:
+    """Фильтрует транзакции по ключевому слову в описании."""
+
+20. **Форматирование транзакции для вывода в консоль**
+def format_transaction(transaction: Dict[str, Any]) -> str:
+    """Форматирует транзакцию для вывода в консоль."""
+
+21. **Запрос у пользователя ответа**
+def get_user_yes_no(prompt: str) -> bool:
+    """Запрашивает у пользователя ответ Да/Нет и возвращает 
+    True/False."""
+
+22. **Запрос у пользователя статуса транзакции**
+def get_valid_status() -> str:
+    """Запрашивает у пользователя статус транзакции до тех пор, 
+    пока не будет введен корректный статус."""
+
+23. **Получение списка всех описаний транзакций**
+def get_transaction_descriptions(transactions: List[Dict[str, Any]]) -> List[str]:
+    """Получает список всех описаний транзакций с помощью генератора
+    transaction_descriptions."""
+
+24. **Генерация списка номеров карт для демонстрации**
+def generate_card_numbers(start: int, stop: int) -> List[str]:
+    """Генерирует список номеров карт для демонстрации 
+    (опционально)."""
+
+25. **Предоставление пользовательского интерфейса**
+def main() -> None:
+    """Основная функция программы для работы с банковскими транзакциями."""
+
 
 ## Установка:
 
@@ -134,6 +180,9 @@ from src.transactions.py import get_transaction_amount_in_rub
 from src.utils.py import load_transactions
 from src.transactions_csv import read_transactions_from_csv
 from src.transactions_excel import read_transactions_from_excel
+from src.bank_operations import process_bank_operations
+from src.transaction_processor import process_bank_search
+
 
 # Пример использования:
 masked_number = get_mask_card_number('7000792289606361')
@@ -152,6 +201,9 @@ rub_amount = get_transaction_amount_in_rub(transaction)
 transactions = load_transactions("data/operations.json")
 transactions = read_transactions_from_csv("data/transactions.csv")
 transactions = read_transactions_from_excel("data/transactions_excel.xlsx")
+result = process_bank_operations(test_data, categories)
+result1 = process_bank_search(test_data, "перевод")
+
 
 # Обработка операций:
 filtered_operations = filter_by_state('id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364')
@@ -174,7 +226,8 @@ sorted_operations = sort_by_date('id': 939719570, 'state': 'EXECUTED', 'date': '
 conftest.py и параметризация в модулях test_masks.py, 
 test_widget.py, test_processing.py, test_generators.py,
 test_decorators.py, test_external_api.py, test_transactions.py,
-test_utils.py, test_transactions_csv.py, test_transactions_excel.py
+test_utils.py, test_transactions_csv.py, test_transactions_excel.py,
+test_bank_operations.py, test_transaction_processor.py
 
 ## Фикстуры
 
@@ -209,6 +262,8 @@ test_utils.py, test_transactions_csv.py, test_transactions_excel.py
 *   `small_edge_range`: предоставляет небольшой диапазон для тестирования 
      крайних случаев.
 *   `single_number_range`: предоставляет диапазон из одного числа.
+*   `test_data`: содержит тестовые данные о банковских операциях.
+*   `categories`: содержит данные о категориях транзакций.
 
 ## Параметризация
   
@@ -280,6 +335,8 @@ test_utils.py, test_transactions_csv.py, test_transactions_excel.py
     pytest tests/test_utils.py
     pytest tests/test_transactions_csv.py
     pytest tests/test_transactions_excel.py
+    pytest tests/test_bank_operations.py
+    pytest tests/test_transaction_processor.py
     ```
 3. Ожидаемый результат.
 После успешного выполнения тестов вы должны увидеть вывод, 

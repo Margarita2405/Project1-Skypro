@@ -248,3 +248,185 @@ def small_edge_range() -> List[int]:
 def single_number_range() -> List[int]:
     """Фикстура предоставляет диапазон из одного числа."""
     return [42, 42]
+
+
+@pytest.fixture
+def basic_transactions() -> List[Dict[str, Any]]:
+    """Фикстура с базовыми тестовыми транзакциями."""
+    return [
+        {
+            "id": "650703",
+            "state": "EXECUTED",
+            "date": "2023-09-05T11:30:32Z",
+            "amount": 16210,
+            "currency_name": "Sol",
+            "currency_code": "PEN",
+            "from": "Счет 58803664561298323391",
+            "to": "Счет 39745660563456619397",
+            "description": "Перевод организации",
+        },
+        {
+            "id": "3598919",
+            "state": "EXECUTED",
+            "date": "2020-12-06T23:00:58Z",
+            "amount": 29740,
+            "currency_name": "Peso",
+            "currency_code": "COP",
+            "from": "Discover 3172601889670065",
+            "to": "Discover 0720428384694643",
+            "description": "Перевод с карты на карту",
+        },
+        {
+            "id": "5380041",
+            "state": "CANCELED",
+            "date": "2021-02-01T11:54:58Z",
+            "amount": 23789,
+            "currency_name": "Peso",
+            "currency_code": "UYU",
+            "from": "",
+            "to": "Счет 23294994494356835683",
+            "description": "Открытие вклада",
+        },
+        {
+            "id": "5294458",
+            "state": "EXECUTED",
+            "date": "2022-06-20T18:08:20Z",
+            "amount": 16836,
+            "currency_name": "Yuan Renminbi",
+            "currency_code": "CNY",
+            "from": "Visa 2759011965877198",
+            "to": "Счет 38287443300766991082",
+            "description": "Перевод с карты на карту",
+        },
+        {
+            "id": "3107343",
+            "state": "EXECUTED",
+            "date": "2023-01-25T13:33:00Z",
+            "amount": 33639,
+            "currency_name": "Krona",
+            "currency_code": "SEK",
+            "from": "",
+            "to": "Счет 35662766798195077538",
+            "description": "Открытие вклада",
+        },
+    ]
+
+
+@pytest.fixture
+def transactions_without_description() -> List[Dict[str, Any]]:
+    """Фикстура с транзакциями, у некоторых из которых отсутствует описание."""
+    return [
+        {
+            "id": "1",
+            "state": "EXECUTED",
+            "description": "Перевод организации",
+            "amount": 1000,
+        },
+        {
+            "id": "2",
+            "state": "EXECUTED",
+            "amount": 2000,
+            # Отсутствует поле 'description'
+        },
+        {
+            "id": "3",
+            "state": "CANCELED",
+            "description": "Перевод с карты на карту",
+            "amount": 3000,
+        },
+        {
+            "id": "4",
+            "state": "EXECUTED",
+            "amount": 4000,
+            # Отсутствует поле 'description'
+        },
+    ]
+
+
+@pytest.fixture
+def transactions_with_empty_description() -> List[Dict[str, Any]]:
+    """Фикстура с транзакциями с пустым или состоящим из пробелов описанием."""
+    return [
+        {
+            "id": "1",
+            "state": "EXECUTED",
+            "description": "Перевод организации",
+            "amount": 1000,
+        },
+        {
+            "id": "2",
+            "state": "EXECUTED",
+            "description": "",  # Пустая строка
+            "amount": 2000,
+        },
+        {
+            "id": "3",
+            "state": "CANCELED",
+            "description": "   ",  # Только пробелы
+            "amount": 3000,
+        },
+        {
+            "id": "4",
+            "state": "EXECUTED",
+            "description": "Перевод с карты на карту",
+            "amount": 4000,
+        },
+    ]
+
+
+@pytest.fixture
+def transactions_mixed_case() -> List[Dict[str, Any]]:
+    """Фикстура с транзакциями с разным регистром в описании."""
+    return [
+        {
+            "id": "1",
+            "state": "EXECUTED",
+            "description": "Перевод Организации",
+            "amount": 1000,
+        },
+        {
+            "id": "2",
+            "state": "EXECUTED",
+            "description": "ПЕРЕВОД С КАРТЫ НА КАРТУ",
+            "amount": 2000,
+        },
+        {
+            "id": "3",
+            "state": "CANCELED",
+            "description": "открытие вклада",
+            "amount": 3000,
+        },
+        {
+            "id": "4",
+            "state": "EXECUTED",
+            "description": "ПереВод Другу",
+            "amount": 4000,
+        },
+    ]
+
+
+# Фикстура для тестовых данных в модуле test_bank_operations
+@pytest.fixture
+def test_data() -> List[Dict[str, Any]]:
+    """Фикстура с тестовыми данными о банковских операциях."""
+    return [
+        {"id": "1", "description": "Перевод организации"},
+        {"id": "2", "description": "Перевод с карты на карту"},
+        {"id": "3", "description": "Открытие вклада"},
+        {"id": "4", "description": "Перевод со счета на счет"},
+        {"id": "5", "description": "Перевод организации"},
+        {"id": "6", "description": "Открытие вклада"},
+        {"id": "7", "description": "Перевод с карты на карту"},
+    ]
+
+
+# Фикстура для категорий в модуле test_bank_operations
+@pytest.fixture
+def categories() -> List[str]:
+    """Фикстура с категориями для поиска."""
+    return [
+        "перевод организации",
+        "открытие вклада",
+        "перевод с карты на карту",
+        "перевод со счета на счет"
+    ]

@@ -78,7 +78,7 @@ def get_mask_account(account_number: str) -> str:
         last_four_digits = account_number[-4:]
 
         # Создаем замаскированную строку
-        masked_account = f"** {last_four_digits}"
+        masked_account = f"**{last_four_digits}"
 
         logger.info(f"Успешная маскировка номера счета: {account_number} -> {masked_account}")
         return masked_account
